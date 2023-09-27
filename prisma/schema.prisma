@@ -11,24 +11,34 @@ datasource db {
     relationMode = "prisma"
 }
 
-enum Type {
-    WEEK
-    DAY
-}
-
 model Event {
     id       String @id @default(cuid())
     name     String
-    type     Type
     startMin Int
     endMin   Int
     dates    Date[]
-    dateId   String
 }
 
 model Date {
-    id      String   @id @default(cuid())
+    eventId String
     date    DateTime
-    Event   Event?   @relation(fields: [eventId], references: [id])
-    eventId String?
+    Event   Event    @relation(fields: [eventId], references: [id])
+
+    @@id([eventId, date])
+}
+
+model SignUp {
+    name String
+    pass String? // this will be the hash
+    id   String  @id @default(cuid())
+}
+
+model SignUpEntry {
+    startTime DateTime
+    endTime   DateTime
+    signUpId  String
+    date      DateTime
+    eventId   String
+
+    @@id([eventId, date, signUpId])
 }
