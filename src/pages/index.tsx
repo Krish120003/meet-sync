@@ -54,7 +54,7 @@ export const CreateForm = () => {
     <Form {...form}>
       <form
         className="flex flex-col items-center justify-center py-8"
-        onSubmit={form.handleSubmit(onSubmit, (err) => console.log(err))}
+        onSubmit={void form.handleSubmit(onSubmit, (err) => console.log(err))}
       >
         <div className="flex flex-col items-start justify-center gap-4 py-4 md:flex-row">
           {/* Event Name */}
