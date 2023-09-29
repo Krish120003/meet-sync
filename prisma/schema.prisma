@@ -22,7 +22,7 @@ model Event {
 model Date {
     eventId String
     date    DateTime
-    Event   Event    @relation(fields: [eventId], references: [id])
+    Event   Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
     @@id([eventId, date])
 }
