@@ -2,16 +2,16 @@ import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
-export const eventInput = z.object({
-  name: z.string(),
-  startMin: z.date(),
-  endMin: z.date(),
-  dates: z.array(z.date()).min(1),
-});
-
 export const eventRouter = createTRPCRouter({
   createEvent: publicProcedure
-    .input(eventInput)
+    .input(
+      z.object({
+        name: z.string(),
+        startMin: z.date(),
+        endMin: z.date(),
+        dates: z.array(z.date()).min(1),
+      }),
+    )
     .output(
       z.object({
         id: z.string(),
