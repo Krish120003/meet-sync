@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Link from "next/link";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,7 +14,6 @@ import { Button } from "~/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -23,8 +21,7 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Calendar } from "~/components/ui/calendar";
-import { DayPicker } from "react-day-picker";
-import { useState } from "react";
+
 import { useToast } from "~/components/ui/use-toast";
 import { useRouter } from "next/router";
 
@@ -65,7 +62,7 @@ export const CreateForm = () => {
       variant: "default",
     });
 
-    router.push(`/${res.id}`);
+    await router.push(`/${res.id}`);
   }
 
   const startMinV = form.watch("startMin");
@@ -74,7 +71,7 @@ export const CreateForm = () => {
     <Form {...form}>
       <form
         className="flex flex-col items-center justify-center py-8"
-        onSubmit={form.handleSubmit(onSubmit, (err) => console.log(err))}
+        onSubmit={(event) => void form.handleSubmit(onSubmit)(event)}
       >
         <div className="flex flex-col items-start justify-center gap-4 py-4 md:flex-row">
           {/* Event Name */}
