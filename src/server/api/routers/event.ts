@@ -46,20 +46,39 @@ export const eventRouter = createTRPCRouter({
         id: event.id,
       };
     }),
-  getEvent: publicProcedure.input(z.string()).query(async ({ input, ctx }) => {
-    const event = await ctx.db.event.findUnique({
-      where: {
-        id: input,
-      },
-      include: {
-        dates: true,
-      },
-    });
+  getEvent: publicProcedure
+    .input(z.string())
+    .output(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        startMin: z.number(),
+        endMin: z.number(),
+        dates: z.array(z.date()),
+      }),
+    )
+    .query(async ({ input, ctx }) => {
+      const event = await ctx.db.event.findUnique({
+        where: {
+          id: input,
+        },
+        include: {
+          dates: true,
+        },
+      });
 
-    if (!event) {
-      throw new Error("Event not found");
-    }
+      if (!event) {
+        throw new Error("Event not found");
+      }
 
-    return event;
-  }),
+      const result = {
+        id: event.id,
+        name: event.name,
+        startMin: event.startMin,
+        endMin: event.endMin,
+        dates: event.dates.map((date) => date.date as Date),
+      };
+
+      return result;
+    }),
 });
