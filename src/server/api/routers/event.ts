@@ -7,8 +7,8 @@ export const eventRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string(),
-        startMin: z.date(),
-        endMin: z.date(),
+        startMin: z.number().min(0).max(24),
+        endMin: z.number().min(0).max(24),
         dates: z.array(z.date()).min(1),
       }),
     )
@@ -19,8 +19,8 @@ export const eventRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       // use input to create event
-      const startTime = input.startMin.getUTCHours();
-      const endTime = input.endMin.getUTCHours();
+      const startTime = input.startMin;
+      const endTime = input.endMin;
 
       if (startTime >= endTime) {
         // we cannot create an event that ends before it starts

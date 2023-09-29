@@ -25,6 +25,8 @@ import { Input } from "~/components/ui/input";
 import { Calendar } from "~/components/ui/calendar";
 import { DayPicker } from "react-day-picker";
 import { useState } from "react";
+import { useToast } from "~/components/ui/use-toast";
+import { useRouter } from "next/router";
 
 export const formInput = z.object({
   name: z.string().min(5, "Name must be at least 5 characters."),
@@ -44,8 +46,26 @@ export const CreateForm = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formInput>) {
-    console.log("ShouldSubmit");
+  const { toast } = useToast();
+  const router = useRouter();
+  const mutation = api.event.createEvent.useMutation();
+
+  async function onSubmit(values: z.infer<typeof formInput>) {
+    console.log("Submitting");
+    const res = await mutation.mutateAsync({
+      name: values.name,
+      startMin: parseInt(values.startMin),
+      endMin: parseInt(values.endMin),
+      dates: values.dates,
+    });
+
+    toast({
+      title: "Event Created",
+      description: `Your event has been created. Redirecting...`,
+      variant: "default",
+    });
+
+    router.push(`/${res.id}`);
   }
 
   const startMinV = form.watch("startMin");
@@ -54,7 +74,7 @@ export const CreateForm = () => {
     <Form {...form}>
       <form
         className="flex flex-col items-center justify-center py-8"
-        onSubmit={void form.handleSubmit(onSubmit, (err) => console.log(err))}
+        onSubmit={form.handleSubmit(onSubmit, (err) => console.log(err))}
       >
         <div className="flex flex-col items-start justify-center gap-4 py-4 md:flex-row">
           {/* Event Name */}
