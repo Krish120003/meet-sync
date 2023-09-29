@@ -13,7 +13,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       <div className="absolute right-0 top-0 p-4">
         <ModeToggle />
       </div>
-      <main className="bg-background flex h-screen flex-col items-center justify-center p-8">
+      <main className="bg-background flex min-h-screen flex-col items-center justify-center p-8">
         <Component {...pageProps} />
       </main>
       <Toaster />

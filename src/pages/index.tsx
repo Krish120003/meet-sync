@@ -105,7 +105,10 @@ export const CreateForm = () => {
                         <SelectValue placeholder="Select a time." />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent asChild className="h-64 overflow-y-scroll">
+                    <SelectContent
+                      asChild
+                      className="h-[16rem] overflow-y-auto"
+                    >
                       {Array.from({ length: 24 }).map((_, i) => (
                         <SelectItem key={i} value={`${i}`}>
                           {i % 12 || 12}:00 {i < 12 ? "AM" : "PM"}
@@ -134,7 +137,10 @@ export const CreateForm = () => {
                         <SelectValue placeholder="Select a time." />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent asChild className="h-64 overflow-y-scroll">
+                    <SelectContent
+                      asChild
+                      className="h-[16rem] overflow-y-auto"
+                    >
                       {Array.from({ length: 25 }).map((_, i) => {
                         if (i <= parseInt(startMinV)) return null;
                         if (i === 24) {
